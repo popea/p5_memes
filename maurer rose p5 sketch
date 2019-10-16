@@ -1,0 +1,124 @@
+let i = 0
+let n = 6
+let d = 71;
+var slider;
+var em = 2;
+let key_input = 0;
+let slider_input
+let modifyDegrees = true
+let showOutline = true
+
+// use a and d keys to increment and decrement n - the petal counter
+// use the v key to enable or disable the outline of the rose
+// the top slider navigates through presets
+// the last value of the slider enables exploration on the degree axis
+// use w and s to explore the degree axis
+
+
+function setup() {
+  createCanvas(640, 480);
+  frameRate(15)
+  angleMode(DEGREES)
+
+  slider = createSlider(1, 5, 1);
+  slider.position(10, 10);
+  slider.style('width', '80px');
+}
+
+function draw() {
+  background(0);
+  translate(width / 2, height / 2);
+
+  rotate(em)
+  em += 0.2
+
+  fill(255)
+  textSize(32);
+  stroke(255);
+  noFill();
+  strokeWeight(1);
+  beginShape();
+  for (i = 0; i < 361; i++) {
+    k = i * d;
+
+    let r = 150 * sin(n * k);
+    let x = r * cos(k);
+    let y = r * sin(k);
+
+    vertex(x, y);
+  }
+  endShape();
+  if (showOutline === true)
+  {
+  stroke(0, 150, 255);
+  strokeWeight(3)
+  beginShape();
+  for (i = 0; i < 361; i++) {
+    k = i;
+
+    let r = 150 * sin(n * k);
+    let x = r * cos(k);
+    let y = r * sin(k);
+
+    vertex(x, y);
+  }
+  endShape();
+  }
+    
+    slider.input(sliderUpdater);
+
+}
+
+
+function sliderUpdater() {
+  var a = slider.value();
+  if (a == 1) {
+    changeND(6, 71)
+  }
+  if (a == 2) {
+    changeND(2, 39)
+  }
+  if (a == 3) {
+    changeND(5, 97)
+  }
+  if (a == 4) {
+    changeND(7, 19)
+  }
+  if (a == 5) {
+    modifyDegrees = false
+  }
+
+}
+
+function keyPressed() {
+  if (modifyDegrees === false) {
+    console.log('Enable degree exploration n=' + n + ' d=' + d)
+    if (keyCode === 87) {
+      // console.log('n=' + n + ' d=' + d)
+      d += 1
+    }
+    if (keyCode === 83) {
+      // console.log('n=' + n + ' d=' + d)
+      d -= 1
+    }
+  } 
+    if (keyCode === 65) {
+      console.log('n=' + n + ' d=' + d)
+      n += 1
+    }
+    if (keyCode === 68) {
+      console.log('n=' + n + ' d=' + d)
+      n -= 1
+    }
+  
+    if (keyCode === 86) {
+      showOutline = !showOutline
+      console.log('show outline is set to: ' + showOutline) 
+    }
+  
+}
+
+function changeND(_n, _d) {
+  n = _n;
+  d = _d
+}
